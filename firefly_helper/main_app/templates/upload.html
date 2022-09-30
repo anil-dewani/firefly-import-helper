@@ -1,0 +1,53 @@
+{% load crispy_forms_tags %}
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
+        integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+        integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>{{title}}</title>
+
+</head>
+
+<body>
+    <Br />
+    <br />
+    <div class="ui raised very padded text container segment">
+        <center>
+            {% if messages %}
+            <div class="ui icon message">
+                <i class="info circle icon"></i>
+                <div class="content">
+                    {% for message in messages %}
+                    <div class="header">
+                        {{ message.level }}
+                    </div>
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <h2 class="ui center aligned icon header">
+                <i class="circular upload icon"></i>
+                {{title}}
+            </h2>
+            <br /><br />
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}<br /><br />
+                <button class="ui secondary button" type="submit">
+                    Upload Statements
+                </button>
+            </form>
+            <br />
+            <br />
+            <br />
+            <a href="/"><i class="arrow alternate circle left icon"></i>Back To Start</a>
+        </center>
+    </div>
+</body>
+
+</html>

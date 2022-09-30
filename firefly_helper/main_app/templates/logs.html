@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
+        integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+        integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script>
+        setTimeout(function () {
+            location.reload();
+        }, 5000); // 5000 milliseconds means 5 seconds.
+    </script>
+</head>
+
+<body>
+    <Br />
+    <br />
+    <div class="ui raised very padded text container segment">
+        <center>
+            {% if messages %}
+            <div class="ui icon message">
+                <i class="info circle icon"></i>
+                <div class="content">
+                    {% for message in messages %}
+                    <div class="header">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <h2 class="ui center aligned icon header">
+                <i class="circular upload icon"></i>
+                {{ title }}
+            </h2>
+            <br /><br />
+
+            <div class="ui message">
+                <div class="header">
+                    Log Messages
+                </div>
+                <p>{{ log_data|linebreaks }}</p>
+            </div>
+            <br />
+            Page will auto-refresh every 5 seconds to reflect latest logs.
+            <br />
+
+        </center>
+
+    </div>
+</body>
+
+</html>

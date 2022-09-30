@@ -1,0 +1,106 @@
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
+        integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+        integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>{{title}}</title>
+
+    <script>
+        setTimeout(function () {
+            location.reload();
+        }, 5000); // 5000 milliseconds means 5 seconds.
+    </script>
+    <style>
+        .blink {
+            animation: blinker 2s step-start infinite;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <Br />
+    <br />
+    <div class="ui raised very padded text container segment">
+        <center>
+            {% if messages %}
+            <div class="ui icon message">
+                <i class="info circle icon"></i>
+                <div class="content">
+                    {% for message in messages %}
+                    <div class="header">
+                        {{ message.level }}
+                    </div>
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <h2 class="ui center aligned icon header">
+                <i class="circular upload icon"></i>
+                {{title}}
+            </h2>
+            <br /><br />
+
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Status</th>
+                        <th>Logs</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for uploaded_file in uploaded_files %}
+                    {% url 'process_logs' uploaded_file.id|stringformat:"i" as logs_url %}
+
+                    <tr>
+                        <td>{{uploaded_file.files.name}}</td>
+
+                        {% if uploaded_file.status == "Processed" %}
+                        <td class="positive">
+                            <a href="/"><i class="cloud download icon"></i> Download</a>
+                        </td>
+                        {% elif uploaded_file.status == "Failed" %}
+                        <td class="negative">
+                            <i class="times circle icon"></i> Failed
+                        </td>
+                        {% elif uploaded_file.status == "Cancelled" %}
+                        <td class="negative">
+                            <i class="times circle icon"></i> Cancelled
+                        </td>
+                        {% else %}
+                        <td class="warning">
+                            <div class="blink"><i class="icon sync"></i> Processing...</div>
+                        </td>
+                        {% endif %}
+
+
+
+                        <td><a target="_blank" href="{{ logs_url }}"><i class="black external alternate
+                            icon"></i>Logs</a></td>
+                    </tr>
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+            <br />
+            Page will auto-refresh every 5 seconds. Wait until all files are processed.
+        </center>
+    </div>
+</body>
+
+</html>

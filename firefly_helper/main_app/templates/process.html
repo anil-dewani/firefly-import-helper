@@ -1,0 +1,71 @@
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
+        integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+        integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <Br />
+    <br />
+    <div class="ui raised very padded text container segment">
+        <center>
+            {% if messages %}
+            <div class="ui icon message">
+                <i class="info circle icon"></i>
+                <div class="content">
+                    {% for message in messages %}
+                    <div class="header">
+                        {{ message.level }}
+                    </div>
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <h2 class="ui center aligned icon header">
+                <i class="circular upload icon"></i>
+                {{title}}
+            </h2>
+            <br /><br />
+
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>Status</th>
+                        <th>Check</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for uploaded_file in uploaded_files %}
+                    <tr>
+                        <td>{{uploaded_file.files.name}}</td>
+                        <td><i class="icon checkmark"></i> {{uploaded_file.status}}</td>
+                        <td><a target="_blank" href="{{ uploaded_file.files.url }}"><i class="black external alternate
+                            icon"></i>View</a></td>
+                    </tr>
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+            <br />
+            <div class="ui large buttons">
+                {% url 'processing_uploaded_files' file_ids as processing_url %}
+                {% url 'cancel_uploaded_files' file_ids as cancel_url %}
+                <a href="{{ processing_url }}"><button class="ui positive button">Process All Files</button></a>
+                <div class="or"></div>
+                <a href="{{ cancel_url }}"><button class="ui negative button">Cancel All Files</button></a>
+            </div>
+        </center>
+    </div>
+</body>
+
+</html>

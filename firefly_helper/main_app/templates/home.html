@@ -14,13 +14,55 @@
     <br />
     <div class="ui raised very padded text container segment">
         <center>
+            {% if messages %}
+            <div class="ui icon message">
+                <i class="info circle icon"></i>
+                <div class="content">
+                    {% for message in messages %}
+                    <div class="header">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
             <h2 class="ui center aligned icon header">
-                <i class="circular users icon"></i>
+                <i class="circular upload icon"></i>
                 Firefly Import Helpers
             </h2>
+            <br /><br />
+            <div class="ui large buttons">
+                <a href="upload/axis-cc/"><button class="ui button">&nbsp;&nbsp;&nbsp;&nbsp;Axis
+                        CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button></a>
+                <div class="or"></div>
+                <a href="upload/axis-savings/"><button class="ui button">Axis Savings</button></a>
+            </div>
+            <br />
+            <br />
+
+            <div class="ui large buttons">
+                <a href="upload/icici-cc/"><button class="ui button">&nbsp;&nbsp;&nbsp;&nbsp;ICICI
+                        CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button></a>
+                <div class="or"></div>
+                <a href="upload/icici-savings/"><button class="ui button">ICICI Savings</button></a>
+            </div>
+            <br />
+            <br />
+
+            <div class="ui large buttons">
+                <a href="upload/sbi-cc/"><button class="ui button">&nbsp;&nbsp;&nbsp;&nbsp;SBI
+                        CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button></a>
+                <div class="or"></div>
+                <a href="upload/sbi-savings/"><button class="ui button">SBI Savings</button></a>
+            </div>
+            <br />
+            <br />
+            <br />
+            <a href="faq/"><i class="external alternate icon"></i>Usage Guide</a>
+            <br /><br />
+            Humbly coded by <a href="http://solutioncoder.com/" target="_blank">SolutionCoder</a>
+
         </center>
-        <p></p>
-        <p></p>
     </div>
 </body>
 

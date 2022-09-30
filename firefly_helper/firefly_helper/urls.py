@@ -24,4 +24,34 @@ urlpatterns = [
         views.index,
         name="index",
     ),
+    path(
+        'upload/<slug:category>/',
+        views.upload_statements,
+        name="upload_statements",
+    ),
+    path(
+        "process/<slug:file_ids>/",
+        views.process_uploaded_files,
+        name="process_uploaded_files"
+    ),
+    path(
+        "processing/<slug:file_ids>/",
+        views.processing_uploaded_files,
+        name="processing_uploaded_files"
+    ),
+    path(
+        "cancel/<slug:file_ids>/",
+        views.cancel_uploaded_files,
+        name="cancel_uploaded_files"
+    ),
+    path(
+        "logs/<slug:file_id>/",
+        views.process_logs,
+        name="process_logs"
+    ),
+    path(
+        "faq/",
+        views.faq_section,
+        name="faq_section",
+    )
 ]
