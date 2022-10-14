@@ -1,0 +1,74 @@
+version: '3'
+
+volumes:
+  production_postgres_data: {}
+  production_postgres_data_backups: {}
+  django_media_files: {}
+  selenoid_data_files: {}
+
+services:
+  django:
+    &django
+    build:
+      context: .
+      dockerfile: ./docker/django/Dockerfile
+    image: firefly_import_helpers_django
+    platform: linux/x86_64
+    volumes:
+      - django_media_files:/app/firefly_helper/media/
+    ports:
+      - "6200:6200"
+    depends_on:
+      - postgres
+      - redis
+      - selenoid
+    env_file:
+      - ./.production.env
+    command: /start-production
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./docker/postgres/Dockerfile
+    image: the_pilot_production_postgres
+    volumes:
+      - production_postgres_data:/var/lib/postgresql/data:Z
+      - production_postgres_data_backups:/backups:z
+    env_file:
+      - ./.production.env
+
+  redis:
+    image: redis:7
+
+  selenoid:
+    network_mode: bridge
+    image: aerokube/selenoid:latest-release
+    volumes:
+      - "./selenoid:/etc/selenoid"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./selenoid/video:/opt/selenoid/video"
+      - "./selenoid/logs:/opt/selenoid/logs"
+    env_file:
+      - ./.production.env
+    command:
+      [
+        "-conf",
+        "/etc/selenoid/browsers.json",
+        "-video-output-dir",
+        "/opt/selenoid/video",
+        "-log-output-dir",
+        "/opt/selenoid/logs",
+        "-service-startup-timeout",
+        "30s",
+        "-listen",
+        "0.0.0.0:4444",
+        "-capture-driver-logs"
+      ]
+    ports:
+      - "4444:4444"
+
+  celeryworker:
+    <<: *django
+    image: firefly_import_helpers_celeryworker
+    command: /start-production-celeryworker
+    ports: []

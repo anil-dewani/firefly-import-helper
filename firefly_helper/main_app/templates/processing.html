@@ -63,15 +63,25 @@
                 <tbody>
 
                     {% for uploaded_file in uploaded_files %}
-                    {% url 'process_logs' uploaded_file.id|stringformat:"i" as logs_url %}
+                    {% url 'process_logs' category uploaded_file.id|stringformat:"i" as logs_url %}
 
                     <tr>
-                        <td>{{uploaded_file.files.name}}</td>
+                        <td>{{uploaded_file.statement_file.name|cut:"statement_uploads/"|cut:"amazon_statement_uploads/"}}
+                        </td>
 
                         {% if uploaded_file.status == "Processed" %}
+                        {% if category == "amazon-mapping-data" %}
                         <td class="positive">
-                            <a href="/"><i class="cloud download icon"></i> Download</a>
+                            <a href="/"><i class="check icon"></i> Processed</a>
                         </td>
+                        {% else %}
+                        <td class="positive">
+                            <a href="{{ uploaded_file.processed_file.url }}"><i class="cloud download icon"></i>
+                                Download</a>
+                        </td>
+                        {% endif %}
+
+
                         {% elif uploaded_file.status == "Failed" %}
                         <td class="negative">
                             <i class="times circle icon"></i> Failed
@@ -99,6 +109,9 @@
             </table>
             <br />
             Page will auto-refresh every 5 seconds. Wait until all files are processed.
+            <br />
+            <br />
+            <a href="/"><i class="arrow alternate circle left icon"></i>Back To Start</a>
         </center>
     </div>
 </body>

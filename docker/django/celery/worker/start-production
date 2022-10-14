@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+cd /app/firefly_helper/
+exec celery -A main_app.celery worker -l INFO

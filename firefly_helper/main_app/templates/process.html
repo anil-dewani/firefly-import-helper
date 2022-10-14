@@ -45,7 +45,8 @@
                 <tbody>
                     {% for uploaded_file in uploaded_files %}
                     <tr>
-                        <td>{{uploaded_file.files.name}}</td>
+                        <td>{{uploaded_file.statement_file.name|cut:"statement_uploads/"|cut:"amazon_statement_uploads/"}}
+                        </td>
                         <td><i class="icon checkmark"></i> {{uploaded_file.status}}</td>
                         <td><a target="_blank" href="{{ uploaded_file.files.url }}"><i class="black external alternate
                             icon"></i>View</a></td>
@@ -58,8 +59,8 @@
             </table>
             <br />
             <div class="ui large buttons">
-                {% url 'processing_uploaded_files' file_ids as processing_url %}
-                {% url 'cancel_uploaded_files' file_ids as cancel_url %}
+                {% url 'processing_uploaded_files' category file_ids as processing_url %}
+                {% url 'cancel_uploaded_files' category file_ids as cancel_url %}
                 <a href="{{ processing_url }}"><button class="ui positive button">Process All Files</button></a>
                 <div class="or"></div>
                 <a href="{{ cancel_url }}"><button class="ui negative button">Cancel All Files</button></a>

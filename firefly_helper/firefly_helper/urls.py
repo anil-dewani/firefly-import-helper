@@ -16,6 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from main_app import views
+from django.contrib import admin
+
+admin.site.site_header = 'Firefly Import Helpers'
+admin.site.index_title = 'Firefly Import Helpers'
+admin.site.site_title = 'Firefly Helper Backend'
 
 urlpatterns = [
     path('console/', admin.site.urls),
@@ -30,22 +35,22 @@ urlpatterns = [
         name="upload_statements",
     ),
     path(
-        "process/<slug:file_ids>/",
+        "process/<slug:category>/<slug:file_ids>/",
         views.process_uploaded_files,
         name="process_uploaded_files"
     ),
     path(
-        "processing/<slug:file_ids>/",
+        "processing/<slug:category>/<slug:file_ids>/",
         views.processing_uploaded_files,
         name="processing_uploaded_files"
     ),
     path(
-        "cancel/<slug:file_ids>/",
+        "cancel/<slug:category>/<slug:file_ids>/",
         views.cancel_uploaded_files,
         name="cancel_uploaded_files"
     ),
     path(
-        "logs/<slug:file_id>/",
+        "logs/<slug:category>/<slug:file_id>/",
         views.process_logs,
         name="process_logs"
     ),
