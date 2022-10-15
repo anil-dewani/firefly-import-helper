@@ -16,7 +16,7 @@ services:
     volumes:
       - django_media_files:/app/firefly_helper/media/
     ports:
-      - "6200:6200"
+      - "8999:8999"
     depends_on:
       - postgres
       - redis

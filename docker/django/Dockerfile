@@ -88,6 +88,14 @@ RUN chmod +x /start-production-celeryworker
 # copy application code to WORKDIR
 COPY --chown=django:django . ${APP_HOME}
 
+# create media directory
+RUN mkdir -p ${APP_HOME}/firefly_helper/media
+RUN chown -R django:django ${APP_HOME}/firefly_helper/media
+
+# create static directory
+RUN mkdir -p ${APP_HOME}/firefly_helper/static
+RUN chown -R django:django ${APP_HOME}/firefly_helper/static
+
 # make django owner of the WORKDIR directory as well.
 RUN chown django:django ${APP_HOME}
 

@@ -1,5 +1,9 @@
 version: '3'
 
+networks:
+  firefly_import_helper_network:
+
+
 volumes:
   production_postgres_data: {}
   production_postgres_data_backups: {}
@@ -14,6 +18,7 @@ services:
       dockerfile: ./docker/django/Dockerfile
     image: firefly_import_helpers_django
     platform: linux/x86_64
+    network_mode: bridge
     volumes:
       - django_media_files:/app/firefly_helper/media/
     ports:
@@ -25,6 +30,8 @@ services:
     env_file:
       - ./.production.env
     command: /start-production
+    networks:
+      - firefly_import_helper_network
 
   postgres:
     build:
@@ -36,9 +43,13 @@ services:
       - production_postgres_data_backups:/backups:z
     env_file:
       - ./.production.env
+    networks:
+      - firefly_import_helper_network
 
   redis:
     image: redis:7
+    networks:
+      - firefly_import_helper_network
 
   selenoid:
     network_mode: bridge
@@ -61,11 +72,15 @@ services:
         "-service-startup-timeout",
         "30s",
         "-listen",
-        "0.0.0.0:4444",
-        "-capture-driver-logs"
+        "0.0.0.0:4445",
+        "-capture-driver-logs",
+        "-container-network",
+        "firefly-import-helper_firefly_import_helper_network"
       ]
     ports:
-      - "4444:4444"
+      - "4445:4445"
+    networks:
+      - firefly_import_helper_network
 
   celeryworker:
     <<: *django

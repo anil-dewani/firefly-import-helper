@@ -12,6 +12,7 @@ import json
 from dateutil.parser import parse
 from selenium import webdriver
 import socket
+import requests
 
 webdriver_capabilities = {
     "browserName": "chrome",
@@ -19,7 +20,7 @@ webdriver_capabilities = {
     "selenoid:options": {
         "enableVNC": False,
         "enableVideo": True,
-    }
+    },
 }
 
 
@@ -120,32 +121,51 @@ def scrape_additional_amazon_data(statement_id):
     amazon_orders = models.AmazonOrderDetail.objects.filter(statement_file=statement_file).filter(status="Unprocessed")
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
     internal_ips = [".".join(ip.split(".")[:-1] + ["1"]) for ip in ips]
-    print(internal_ips)
-    print(hostname)
-    browser = webdriver.Remote(command_executor="http://"+str(internal_ips[0])+":4444/wd/hub",desired_capabilities=webdriver_capabilities)
-    
-    for amazon_order in amazon_orders:
-        amazon_url = amazon_order.product_link
-        
+    selenoid_hosts = ["localhost","selenoid",hostname,str(internal_ips[0])]
+    print("Trying to find selenoid hub : "+str(selenoid_hosts))
+    approved_selenoid_url = None
+    for selenoid_host in selenoid_hosts:
+        print("trying :: "+selenoid_host)
+        selenoid_hub_url = "http://"+selenoid_host+":4445/wd/hub"
         try:
-            browser.get(amazon_url)
-            time.sleep(5)
-            main_category_text = browser.find_element('xpath','//*[@id="wayfinding-breadcrumbs_feature_div"]/ul/li[1]/span/a').text
-            category_list_text = browser.find_element('xpath','//*[@id="wayfinding-breadcrumbs_feature_div"]/ul').text
+            response = requests.get(selenoid_hub_url)
+            if response.ok:
+                approved_selenoid_url = selenoid_hub_url
+                break
+            else:
+                approved_selenoid_url = None
+                print(selenoid_host + " :: not approved")
         except:
-            main_category_text = ""
-            category_list_text = ""
+            print(selenoid_host+" :: try/catch")
+    
+    print("selenoid url : "+str(approved_selenoid_url))
+    if approved_selenoid_url:
+        browser = webdriver.Remote(command_executor=approved_selenoid_url,desired_capabilities=webdriver_capabilities)
         
-        amazon_order.main_category = main_category_text
-        amazon_order.category_list = category_list_text
-        log_message_amazon.apply_async(("INFO","Got Info: "+str(main_category_text)+">>"+str(category_list_text), statement_id))
-        amazon_order.status = "Processed"
-        amazon_order.save()
+        for amazon_order in amazon_orders:
+            amazon_url = amazon_order.product_link
+            
+            try:
+                browser.get(amazon_url)
+                time.sleep(5)
+                main_category_text = browser.find_element('xpath','//*[@id="wayfinding-breadcrumbs_feature_div"]/ul/li[1]/span/a').text
+                category_list_text = browser.find_element('xpath','//*[@id="wayfinding-breadcrumbs_feature_div"]/ul').text
+            except:
+                main_category_text = ""
+                category_list_text = ""
+            
+            amazon_order.main_category = main_category_text
+            amazon_order.category_list = category_list_text
+            log_message_amazon.apply_async(("INFO","Got Info: "+str(main_category_text)+">>"+str(category_list_text), statement_id))
+            amazon_order.status = "Processed"
+            amazon_order.save()
 
-    statement_file.selenoid_session_id = str(browser.session_id)
-    statement_file.status = "Processed"
-    statement_file.save()
-    browser.quit()
+        statement_file.selenoid_session_id = str(browser.session_id)
+        statement_file.status = "Processed"
+        statement_file.save()
+        browser.quit()
+    else:
+        return "No Selenoid Approved URLs formed"
 
 
 

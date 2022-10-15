@@ -7,4 +7,15 @@ set -o nounset
 
 python /app/firefly_helper/manage.py collectstatic --noinput
 
+python /app/firefly_helper/manage.py migrate
+
+
+
+if [ "$DJANGO_SUPERUSER_USERNAME" ]
+then
+    python /app/firefly_helper/manage.py ensure_adminuser \
+        --username=$DJANGO_SUPERUSER_USERNAME \
+        --password=$DJANGO_SUPERUSER_PASSWORD
+fi
+
 /usr/local/bin/gunicorn firefly_helper.wsgi:application --bind 0.0.0.0:6200 --chdir=/app/firefly_helper
