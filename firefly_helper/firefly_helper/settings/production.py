@@ -10,10 +10,10 @@ env = environ.Env(
 
 environ.Env.read_env(os.path.join(BASE_DIR, '.production.env'))
 
-
+print(BASE_DIR)
 DEBUG = env('DEBUG')
 
-TIME_ZONE = env("TIME_ZONE")
+TIME_ZONE = env('TIMEZONE')
 
 
 SECRET_KEY = env("DJANGO_SECRET_KEY")
