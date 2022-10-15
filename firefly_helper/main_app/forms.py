@@ -5,9 +5,20 @@ from main_app import models
 class StatementFileForm(forms.ModelForm):
     class Meta:
         model = models.StatementFile
-        fields = ['files']
+        fields = ['statement_file']
         widgets = {
-            'files': ClearableFileInput(attrs={
+            'statement_file': ClearableFileInput(attrs={
                 'multiple': True,
             })
+        }
+
+
+class AmazonStatementFileForm(forms.ModelForm):
+    class Meta:
+        model = models.AmazonStatementFile
+        fields = ['statement_file']
+        widgets = {
+            'statement_file': ClearableFileInput(attrs={
+                'multiple': True,
+            }),
         }

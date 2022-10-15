@@ -38,12 +38,33 @@
             </h2>
             <br /><br />
 
-            <div class="ui message">
-                <div class="header">
-                    Log Messages
-                </div>
-                <p>{{ log_data|linebreaks }}</p>
+
+            <div class="header">
+                Log Messages
             </div>
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Mode</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log_message in log_data.all %}
+                    <tr>
+                        <td>{{log_message.created_at}}</td>
+                        <td>{{log_message.mode}}</td>
+                        <td>{{log_message.message}}</td>
+                    </tr>
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+            <br />
+
             <br />
             Page will auto-refresh every 5 seconds to reflect latest logs.
             <br />

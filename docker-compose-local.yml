@@ -1,0 +1,45 @@
+version: '3'
+
+volumes:
+  production_postgres_data: {}
+  production_postgres_data_backups: {}
+  django_media_files: {}
+
+services:
+  django:
+    &django
+    build:
+      context: .
+      dockerfile: ./docker/django/Dockerfile
+    image: firefly_import_helpers_django_local
+    platform: linux/x86_64
+    volumes:
+      - django_media_files:/app/firefly_helper/media/
+    ports:
+      - "8999:8999"
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - ./.local.env
+    command: /start-local
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./docker/postgres/Dockerfile
+    image: firefly_import_helpers_postgres_local
+    volumes:
+      - production_postgres_data:/var/lib/postgresql/data:Z
+      - production_postgres_data_backups:/backups:z
+    env_file:
+      - ./.local.env
+
+  redis:
+    image: redis:7
+
+  celeryworker:
+    <<: *django
+    image: firefly_import_helpers_celeryworker_local
+    command: /start-local-celeryworker
+    ports: []
