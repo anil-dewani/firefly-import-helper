@@ -14,6 +14,7 @@ from selenium import webdriver
 import socket
 import requests
 
+
 webdriver_capabilities = {
     "browserName": "chrome",
     "browserVersion": "106.0",
@@ -40,12 +41,11 @@ app.autodiscover_tasks()
 print(psutil.Process(os.getpid()).cmdline())
 
 
-if any("celery" in s for s in psutil.Process(os.getpid()).cmdline()):
+if any("spawn" in s for s in psutil.Process(os.getpid()).cmdline()) or any("celery" in s for s in psutil.Process(os.getpid()).cmdline()):
     import django; django.setup()
+    from main_app import models
     from django.core.files.base import File
     from django.utils.text import slugify
-    from main_app import models
-    print("woah")
 
 class identdict(dict):
     def __missing__(self, key):

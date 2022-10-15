@@ -14,7 +14,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.local.env'))
 
 DEBUG = env('DEBUG')
 
-TIME_ZONE = env("TIME_ZONE")
+TIME_ZONE = env("TIMEZONE")
 
 
 SECRET_KEY = env(
@@ -57,4 +57,4 @@ DATABASES = {
     }
 }
 
-CELERY_BROKER_URL = env.cache('REDIS_URL')
+CELERY_BROKER_URL = env('REDIS_URL')
