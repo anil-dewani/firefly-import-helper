@@ -1,6 +1,6 @@
 [MASTER]
 load-plugins=pylint_django, pylint_celery
-django-settings-module=firefly_helper.firefly_helper.settings.production
+django-settings-module=firefly_helper.settings.production
 
 [FORMAT]
 max-line-length=120
@@ -12,4 +12,4 @@ disable=missing-docstring,invalid-name
 max-parents=13
 
 [TYPECHECK]
-generated-members=REQUEST,acl_users,aq_parent,"[a-zA-Z]+_set{1,2}",save,delete
+generated-members=REQUEST,acl_users,aq_parent,"[a-zA-Z]+_set{1,2}",save,delete,_meta,id
