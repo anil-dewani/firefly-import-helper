@@ -722,7 +722,7 @@ def generate_csv_file(statement_id):
         + slugify(str(statement_file.created_at))
         + ".csv"
     )
-    outfile_path = "/tmp/" + output_file_name
+    outfile_path = "/tmp/" + output_file_name  # nosec
     log_message.apply_async(
         ("INFO", "CSV File Created: " + str(outfile_path), statement_id)
     )

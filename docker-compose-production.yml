@@ -1,89 +1,87 @@
-version: '3'
+version: "3"
 
 networks:
-  firefly_import_helper_network:
-
+    firefly_import_helper_network:
 
 volumes:
-  production_postgres_data: {}
-  production_postgres_data_backups: {}
-  django_media_files: {}
-  selenoid_data_files: {}
+    production_postgres_data: {}
+    production_postgres_data_backups: {}
+    django_media_files: {}
+    selenoid_data_files: {}
 
 services:
-  django:
-    &django
-    build:
-      context: .
-      dockerfile: ./docker/django/Dockerfile
-    image: firefly_import_helpers_django
-    platform: linux/x86_64
-    network_mode: bridge
-    volumes:
-      - django_media_files:/app/firefly_helper/media/
-    ports:
-      - "6200:6200"
-    depends_on:
-      - postgres
-      - redis
-      - selenoid
-    env_file:
-      - ./.production.env
-    command: /start-production
-    networks:
-      - firefly_import_helper_network
+    django: &django
+        build:
+            context: .
+            dockerfile: ./docker/django/Dockerfile
+        image: firefly_import_helpers_django
+        platform: linux/x86_64
+        network_mode: bridge
+        volumes:
+            - django_media_files:/app/firefly_helper/media/
+        ports:
+            - "6200:6200"
+        depends_on:
+            - postgres
+            - redis
+            - selenoid
+        env_file:
+            - ./.production.env
+        command: /start-production
+        networks:
+            - firefly_import_helper_network
 
-  postgres:
-    build:
-      context: .
-      dockerfile: ./docker/postgres/Dockerfile
-    image: the_pilot_production_postgres
-    volumes:
-      - production_postgres_data:/var/lib/postgresql/data:Z
-      - production_postgres_data_backups:/backups:z
-    env_file:
-      - ./.production.env
-    networks:
-      - firefly_import_helper_network
+    postgres:
+        build:
+            context: .
+            dockerfile: ./docker/postgres/Dockerfile
+        image: the_pilot_production_postgres
+        volumes:
+            - production_postgres_data:/var/lib/postgresql/data:Z
+            - production_postgres_data_backups:/backups:z
+        env_file:
+            - ./.production.env
+        networks:
+            - firefly_import_helper_network
 
-  redis:
-    image: redis:7
-    networks:
-      - firefly_import_helper_network
+    redis:
+        image: redis:7
+        networks:
+            - firefly_import_helper_network
 
-  selenoid:
-    network_mode: bridge
-    image: aerokube/selenoid:latest-release
-    volumes:
-      - "./selenoid:/etc/selenoid"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "./selenoid/video:/opt/selenoid/video"
-      - "./selenoid/logs:/opt/selenoid/logs"
-    env_file:
-      - ./.production.env
-    command:
-      [
-        "-conf",
-        "/etc/selenoid/browsers.json",
-        "-video-output-dir",
-        "/opt/selenoid/video",
-        "-log-output-dir",
-        "/opt/selenoid/logs",
-        "-service-startup-timeout",
-        "30s",
-        "-listen",
-        "0.0.0.0:4445",
-        "-capture-driver-logs",
-        "-container-network",
-        "firefly-import-helper_firefly_import_helper_network"
-      ]
-    ports:
-      - "4445:4445"
-    networks:
-      - firefly_import_helper_network
+    selenoid:
+        network_mode: bridge
+        image: aerokube/selenoid:latest-release
+        volumes:
+            - "./selenoid:/etc/selenoid"
+            - "/var/run/docker.sock:/var/run/docker.sock"
+            - "./selenoid/video:/opt/selenoid/video"
+            - "./selenoid/logs:/opt/selenoid/logs"
+        env_file:
+            - ./.production.env
+        command:
+            [
+                "-conf",
+                "/etc/selenoid/browsers.json",
+                "-video-output-dir",
+                "/opt/selenoid/video",
+                "-log-output-dir",
+                "/opt/selenoid/logs",
+                "-service-startup-timeout",
+                "30s",
+                "-listen",
+                "0.0.0.0:4445",
+                "-capture-driver-logs",
+                "-container-network",
+                "firefly-import-helper_firefly_import_helper_network",
+            ]
+        ports:
+            - "4445:4445"
+        networks:
+            - firefly_import_helper_network
 
-  celeryworker:
-    <<: *django
-    image: firefly_import_helpers_celeryworker
-    command: /start-production-celeryworker
-    ports: []
+    celeryworker:
+        <<: *django
+        image: firefly_import_helpers_celeryworker
+        command: /start-production-celeryworker
+        ports: []
