@@ -1,0 +1,10 @@
+ignore:
+  PYSEC-2022-304:
+  - expires: 2023-01-01T12:30:00+0000
+    package: django
+    reason: I see no value
+  CVE-2020-28476:
+  - expires: 2023-01-01T12:30:00+0000
+    package: tornado
+    reason: I see no value
+version: "1.0"
