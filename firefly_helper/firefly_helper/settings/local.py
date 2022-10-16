@@ -1,18 +1,16 @@
-from .base import *  # noqa
-
 import environ
 
+from .base import *  # noqa
 
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, True)
 )
 
-environ.Env.read_env(os.path.join(BASE_DIR, '.local.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, ".local.env"))  # noqa: F405
 
 
-
-DEBUG = env('DEBUG')
+DEBUG = env("DEBUG")
 
 TIME_ZONE = env("TIMEZONE")
 
@@ -47,14 +45,14 @@ CELERY_TASK_EAGER_PROPAGATES = True
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env("POSTGRES_DB"),
-        'USER': env("POSTGRES_USER"),
-        'PASSWORD': env("POSTGRES_PASSWORD"),
-        'HOST': env("POSTGRES_HOST"),
-        'PORT': env("POSTGRES_PORT"),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("POSTGRES_DB"),
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": env("POSTGRES_HOST"),
+        "PORT": env("POSTGRES_PORT"),
     }
 }
 
-CELERY_BROKER_URL = env('REDIS_URL')
+CELERY_BROKER_URL = env("REDIS_URL")
