@@ -24,6 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 # Application definition
 
 INSTALLED_APPS = [
+    "simpleui",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -126,3 +127,8 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_RESULT_EXTENDED = True
 CELERY_TASK_TRACK_STARTED = True
+
+
+SIMPLEUI_DEFAULT_THEME = "admin.lte.css"
+SIMPLEUI_LOGO = "https://avatars2.githubusercontent.com/u/13655483?s=60&v=4"
+SIMPLEUI_ANALYSIS = False

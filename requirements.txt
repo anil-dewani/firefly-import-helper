@@ -40,6 +40,8 @@ django-crispy-forms==1.14.0
 django-debug-toolbar==3.7.0
 django-environ==0.9.0
 django-extensions==3.2.1
+django-simpleui==2022.7.29
+docutils==0.19
 dodgy==0.2.1
 entrypoints==0.4
 et-xmlfile==1.1.0
@@ -118,7 +120,6 @@ pyflakes==2.4.0
 Pygments==2.13.0
 pylint==2.15.4
 pylint-celery==0.3
-pylint-django==2.5.3
 pylint-flask==0.6
 pylint-plugin-utils==0.7
 pyparsing==3.0.9
