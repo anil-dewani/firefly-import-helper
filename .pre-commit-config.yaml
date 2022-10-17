@@ -15,6 +15,7 @@ repos:
           - id: check-merge-conflict
           - id: check-case-conflict
           - id: check-added-large-files
+            args: ["--maxkb=5000"]
           - id: check-docstring-first
           - id: check-json
           - id: check-symlinks
