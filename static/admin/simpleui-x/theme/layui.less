@@ -1,0 +1,31 @@
+@import "base";
+
+@primary: #009688 !important;
+@color: white;
+
+@menu-color: #484848;
+@menu-background: #393d49 !important;
+
+@menu-color-hover: #fff;
+@menu-background-hover: #009688;
+
+@menu-title-color: #fff !important;
+@menu-title-background-color: #393d49;
+
+@menu-title-color-hover: #fff;
+@menu-title-background-color-hover: #4e5465;
+
+@navbar-color: rgba(255, 255, 255, 0.7);
+@navbar-background: #23262e;
+
+.logo-wrap {
+	background-color: @navbar-background;
+	color: @navbar-color;
+}
+
+.menu {
+	.el-menu .is-active {
+		color: #fff !important;
+		background-color: @menu-background-hover !important;
+	}
+}
