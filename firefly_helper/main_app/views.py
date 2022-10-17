@@ -1,47 +1,51 @@
-from django.shortcuts import render, redirect
-from main_app import models
-from main_app import forms
-from main_app import celery
 from django.contrib import messages
+from django.shortcuts import redirect, render
+from main_app import celery, forms, models
 
 
 def index(request):
-    
+
     context = {
-        'title': 'Firefly Import Helper',
+        "title": "Firefly Import Helper",
     }
 
-    template = 'home.html'
+    template = "home.html"
     return render(request, template, context)
+
 
 def faq_section(request):
     context = {
-        'title': 'Importer FAQ',
+        "title": "Importer FAQ",
     }
-    template = 'faq.html'
+    template = "faq.html"
     return render(request, template, context)
 
 
 def process_uploaded_files(request, category, file_ids):
     if category == "amazon-mapping-data":
-        uploaded_files = models.AmazonStatementFile.objects.filter(id__in=file_ids.split('-'))
+        uploaded_files = models.AmazonStatementFile.objects.filter(
+            id__in=file_ids.split("-")
+        )
     else:
-        uploaded_files = models.StatementFile.objects.filter(id__in=file_ids.split('-'))
+        uploaded_files = models.StatementFile.objects.filter(id__in=file_ids.split("-"))
 
     context = {
-        'title': 'Process Files',
-        'uploaded_files': uploaded_files,
-        'category': category,
-        'file_ids': file_ids,
+        "title": "Process Files",
+        "uploaded_files": uploaded_files,
+        "category": category,
+        "file_ids": file_ids,
     }
-    template = 'process.html'
+    template = "process.html"
     return render(request, template, context)
 
-def processing_uploaded_files(request,category, file_ids):
+
+def processing_uploaded_files(request, category, file_ids):
     if category == "amazon-mapping-data":
-        uploaded_files = models.AmazonStatementFile.objects.filter(id__in=file_ids.split('-'))
+        uploaded_files = models.AmazonStatementFile.objects.filter(
+            id__in=file_ids.split("-")
+        )
     else:
-        uploaded_files = models.StatementFile.objects.filter(id__in=file_ids.split('-'))
+        uploaded_files = models.StatementFile.objects.filter(id__in=file_ids.split("-"))
 
     for uploaded_file in uploaded_files:
         if uploaded_file.status == "Unprocessed":
@@ -54,28 +58,30 @@ def processing_uploaded_files(request,category, file_ids):
                 celery.convert_statement_file.apply_async((uploaded_file.id,))
 
     context = {
-        'title': 'Processing Files',
-        'uploaded_files': uploaded_files,
-        'file_ids': file_ids,
-        'category': category,
+        "title": "Processing Files",
+        "uploaded_files": uploaded_files,
+        "file_ids": file_ids,
+        "category": category,
     }
-    template = 'processing.html'
+    template = "processing.html"
     return render(request, template, context)
 
 
 def cancel_uploaded_files(request, category, file_ids):
     if category == "amazon-mapping-data":
-        uploaded_files = models.AmazonStatementFile.objects.filter(id__in=file_ids.split('-'))
+        uploaded_files = models.AmazonStatementFile.objects.filter(
+            id__in=file_ids.split("-")
+        )
     else:
-        uploaded_files = models.StatementFile.objects.filter(id__in=file_ids.split('-'))
-    
-    for uploaded_file in uploaded_files:
-        uploaded_file.status = 'Cancelled'
-        uploaded_file.save()
-    
-    messages.add_message(request, messages.INFO, 'All Uploaded Files Cancelled')
+        uploaded_files = models.StatementFile.objects.filter(id__in=file_ids.split("-"))
 
-    return redirect('index')
+    for uploaded_file in uploaded_files:
+        uploaded_file.status = "Cancelled"
+        uploaded_file.save()
+
+    messages.add_message(request, messages.INFO, "All Uploaded Files Cancelled")
+
+    return redirect("index")
 
 
 def process_logs(request, category, file_id):
@@ -83,13 +89,13 @@ def process_logs(request, category, file_id):
         uploaded_file = models.AmazonStatementFile.objects.filter(id=file_id).first()
     else:
         uploaded_file = models.StatementFile.objects.filter(id=file_id).first()
-    
+
     context = {
-        'title': 'Process Log Entries',
-        'log_data': uploaded_file.log_data,
-        'category': category,
+        "title": "Process Log Entries",
+        "log_data": uploaded_file.log_data,
+        "category": category,
     }
-    template = 'logs.html'
+    template = "logs.html"
     return render(request, template, context)
 
 
@@ -110,14 +116,14 @@ def upload_statements(request, category):
         statement_type = "Amazon Mapping Data"
     else:
         statement_type = None
-    
-    if request.method == 'POST':
+
+    if request.method == "POST":
         if category == "amazon-mapping-data":
             form = forms.AmazonStatementFileForm(request.POST, request.FILES)
         else:
             form = forms.StatementFileForm(request.POST, request.FILES)
-        
-        statement_files = request.FILES.getlist('statement_file')
+
+        statement_files = request.FILES.getlist("statement_file")
         if form.is_valid():
             instance_ids = ""
             for f in statement_files:
@@ -131,7 +137,7 @@ def upload_statements(request, category):
                     file_instance.save()
                 instance_ids = instance_ids + str(file_instance.id) + "-"
             instance_ids = instance_ids[:-1]
-            return redirect('process_uploaded_files',category,instance_ids)
+            return redirect("process_uploaded_files", category, instance_ids)
     else:
         if category == "amazon-mapping-data":
             form = forms.AmazonStatementFileForm()
@@ -139,12 +145,9 @@ def upload_statements(request, category):
             form = forms.StatementFileForm()
 
     context = {
-        'title': statement_type+' Importer',
-        'form': form,
+        "title": statement_type + " Importer",
+        "form": form,
     }
 
-    template = 'upload.html'
+    template = "upload.html"
     return render(request, template, context)
-
-
-

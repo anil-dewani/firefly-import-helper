@@ -1,79 +1,104 @@
 <html>
+	<head>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
+			integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+			integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+	</head>
 
-<head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
-        integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
-        integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+	<body>
+		<br />
+		<br />
+		<div class="ui raised very padded text container segment">
+			<center>
+				{% if messages %}
+				<div class="ui icon message">
+					<i class="info circle icon"></i>
+					<div class="content">
+						{% for message in messages %}
+						<div class="header">{{ message }}</div>
+						{% endfor %}
+					</div>
+				</div>
+				{% endif %}
+				<h2 class="ui center aligned icon header">
+					<i class="circular upload icon"></i>
+					Firefly Import Helpers
+				</h2>
+				<br /><br />
+				<div class="ui large buttons">
+					<a href="upload/axis-cc/"
+						><button class="ui button">
+							&nbsp;&nbsp;&nbsp;&nbsp;Axis
+							CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</button></a
+					>
+					<div class="or"></div>
+					<a href="upload/axis-savings/"
+						><button class="ui button">Axis Savings</button></a
+					>
+				</div>
+				<br />
+				<br />
 
-<body>
-    <Br />
-    <br />
-    <div class="ui raised very padded text container segment">
-        <center>
-            {% if messages %}
-            <div class="ui icon message">
-                <i class="info circle icon"></i>
-                <div class="content">
-                    {% for message in messages %}
-                    <div class="header">
-                        {{ message }}
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
-            <h2 class="ui center aligned icon header">
-                <i class="circular upload icon"></i>
-                Firefly Import Helpers
-            </h2>
-            <br /><br />
-            <div class="ui large buttons">
-                <a href="upload/axis-cc/"><button class="ui button">&nbsp;&nbsp;&nbsp;&nbsp;Axis
-                        CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button></a>
-                <div class="or"></div>
-                <a href="upload/axis-savings/"><button class="ui button">Axis Savings</button></a>
-            </div>
-            <br />
-            <br />
+				<div class="ui large buttons">
+					<a href="upload/icici-cc/"
+						><button class="ui button">
+							&nbsp;&nbsp;&nbsp;&nbsp;ICICI
+							CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</button></a
+					>
+					<div class="or"></div>
+					<a href="upload/icici-savings/"
+						><button class="ui button">ICICI Savings</button></a
+					>
+				</div>
+				<br />
+				<br />
 
-            <div class="ui large buttons">
-                <a href="upload/icici-cc/"><button class="ui button">&nbsp;&nbsp;&nbsp;&nbsp;ICICI
-                        CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button></a>
-                <div class="or"></div>
-                <a href="upload/icici-savings/"><button class="ui button">ICICI Savings</button></a>
-            </div>
-            <br />
-            <br />
-
-            <div class="ui large buttons">
-                <a href="upload/sbi-cc/"><button class="ui button">&nbsp;&nbsp;&nbsp;&nbsp;SBI
-                        CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button></a>
-                <div class="or"></div>
-                <a href="upload/sbi-savings/"><button class="ui button">SBI Savings</button></a>
-            </div>
-            <br />
-            <br />
-            <a href="upload/amazon-mapping-data/">
-                <div class="ui animated fade button" tabindex="0">
-                    <div class="visible content">Update Amazon Mapping Data</div>
-                    <div class="hidden content">
-                        Woah, Smartie!
-                    </div>
-                </div>
-            </a>
-            <br />
-            <Br />
-            <br />
-            <a href="faq/"><i class="external alternate icon"></i>Usage Guide</a>
-            <br /><br />
-            Humbly coded by <a href="http://solutioncoder.com/" target="_blank">SolutionCoder</a>
-
-        </center>
-    </div>
-</body>
-
+				<div class="ui large buttons">
+					<a href="upload/sbi-cc/"
+						><button class="ui button">
+							&nbsp;&nbsp;&nbsp;&nbsp;SBI
+							CC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</button></a
+					>
+					<div class="or"></div>
+					<a href="upload/sbi-savings/"
+						><button class="ui button">SBI Savings</button></a
+					>
+				</div>
+				<br />
+				<br />
+				<a href="upload/amazon-mapping-data/">
+					<div class="ui animated fade button" tabindex="0">
+						<div class="visible content">
+							Update Amazon Mapping Data
+						</div>
+						<div class="hidden content">Woah, Smartie!</div>
+					</div>
+				</a>
+				<br />
+				<br />
+				<br />
+				<a href="faq/"
+					><i class="external alternate icon"></i>Usage Guide</a
+				>
+				<br /><br />
+				Humbly coded by
+				<a href="http://solutioncoder.com/" target="_blank"
+					>SolutionCoder</a
+				>
+			</center>
+		</div>
+	</body>
 </html>

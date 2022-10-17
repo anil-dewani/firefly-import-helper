@@ -2,8 +2,8 @@ from django.apps import AppConfig
 
 
 class MainAppConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'main_app'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "main_app"
 
     def ready(self):
-        from main_app import signals
+        from main_app import signals  # noqa: F401
