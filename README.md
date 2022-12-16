@@ -1,5 +1,9 @@
 # Firefly III Import Helper
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
+
 This tool is an extended utility to properly format and trim out un-necessary details from the default exported e-statements of popular banks. The tool parses the e-statements and converts them into Firefly III compatible transactions and uploads each transaction on the firefly III server via its personal access token. If access token is not available, it lets users download the files so they can manually import them to firefly III using the default importer module.
 
 Features:
